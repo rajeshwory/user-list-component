@@ -2,17 +2,30 @@ import './App.css'
 import { Loader } from './components/loader'
 import { Card } from './components/card'
 import useFetchUsers from './hooks/use-fetch-users'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { PaginationComponent } from './components/pagination-footer'
 
 
 function App() {
   const [users, loading, error] = useFetchUsers()
   const [searchInput, setSearchInput] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const filteredUsers = users.filter((user) =>
+  const filteredUsers = useMemo (() => {
+    return users.filter(
+    (user) =>
     user.name.toLowerCase().includes(searchInput.toLowerCase()) ||
     user.email.toLowerCase().includes(searchInput.toLowerCase())
-  )
+  )}, [searchInput])
+
+  const totalPages = Math.ceil(filteredUsers.length / 5)
+  const indexOfLastUser = currentPage * 5
+  const indexOfFirstUser = indexOfLastUser - 5
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser)
+
+  const handlePageChange = (currentPage) => {
+    setCurrentPage(currentPage)
+  }
 
   if (loading) return <Loader />
   if (error) return <div className="text-center text-red-500">{error}</div>
@@ -37,6 +50,7 @@ function App() {
           ))}
         </div>
       </div>
+      <PaginationComponent currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
   )
 }
