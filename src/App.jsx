@@ -16,11 +16,13 @@ function App() {
     (user) =>
     user.name.toLowerCase().includes(searchInput.toLowerCase()) ||
     user.email.toLowerCase().includes(searchInput.toLowerCase())
-  )}, [searchInput])
+  )}, [searchInput, users])
+  const perPage = 4
 
-  const totalPages = Math.ceil(filteredUsers.length / 5)
-  const indexOfLastUser = currentPage * 5
-  const indexOfFirstUser = indexOfLastUser - 5
+
+  const totalPages = Math.ceil(filteredUsers.length / perPage)
+  const indexOfLastUser = currentPage * perPage
+  const indexOfFirstUser = indexOfLastUser - perPage
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser)
 
   const handlePageChange = (currentPage) => {
@@ -45,7 +47,7 @@ function App() {
         </div>
         
         <div className='grid grid-cols-3 gap-4 mt-5'>
-          {filteredUsers.map((user) => (
+          {currentUsers.map((user) => (
             <Card key={user.id} user={user} />
           ))}
         </div>
