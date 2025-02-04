@@ -11,6 +11,7 @@ import {
 
 export const PaginationComponent = ({currentPage, totalPages, onPageChange}) => {
     return(
+      <div className="mt-10">
         <Pagination>
       <PaginationContent>
         <PaginationItem>
@@ -47,5 +48,6 @@ export const PaginationComponent = ({currentPage, totalPages, onPageChange}) => 
         </PaginationItem>
       </PaginationContent>
     </Pagination>
+    </div>
     )
 }
