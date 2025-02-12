@@ -19,15 +19,15 @@ const validationSchema = z
 
  const LabelInput = ({error, label, placeholder, register, name}) => {
     return(
-        <>
-            <label>{label}</label>
+        <div className="my-2">
+            <label className="text-base font-light">{label}</label>
                 <input
                     placeholder={placeholder}
-                    className="mt-2 border border-slate-400 rounded-lg p-1 w-auto"
+                    className="mt-2 border border-slate-400 rounded-lg px-2 py-1 w-full h-11"
                     {...register(name)}
                 />
                 {error && <span className="text-sm text-red-500 mb-5">{error?.message}</span>}
-        </>
+        </div>
     )
  }   
 
@@ -36,14 +36,14 @@ const validationSchema = z
     const [isVisible, setIsVisible] = useState(false)
     const toggleVisibility = () => setIsVisible(prevState => !prevState)
     return(
-        <>
-          <label >{label}</label>
+        <div className="my-2">
+          <label className="text-base font-light">{label}</label>
                 <div className="relative">
                     <input
                         type={isVisible ? "text" : "password"}
                         required
                         placeholder={placeholder}
-                        className="mt-2 w-auto border border-slate-400 rounded-lg p-1 pr-8"
+                        className="mt-2 w-full border border-slate-400 rounded-lg h-11 py-1 pl-2 pr-8"
                         {...register(name, { required: true })}
                     />
                      <span
@@ -52,7 +52,7 @@ const validationSchema = z
                         aria-label={isVisible ? "Hide password" : "Show password"}
                         aria-pressed={isVisible}
                         aria-controls="password"
-                        className="absolute right-2 top-1/2 transform -translate-y-1/4 cursor-pointer"
+                        className="absolute right-6 top-1/2 transform -translate-y-1/4 cursor-pointer"
                      >{isVisible ? (
                         <EyeOff size={20} aria-hidden="true" />
                      )
@@ -62,7 +62,7 @@ const validationSchema = z
                      </span>
                  </div>
                 {error && <span className="text-sm text-red-500 mb-5">{error.message}</span>}
-        </>
+        </div>
     )
  }
 
@@ -71,15 +71,15 @@ const validationSchema = z
 export const Register = () => {
 
     const { register, handleSubmit, formState: { errors, isValid } } = useForm({ resolver: zodResolver(validationSchema), mode: "onChange" })
+
     const submitForm = (data) => {
         console.log(data)
     }
 
     return (
-        <div className="flex flex-col border border-slate-300 items-center">
-            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col">
-                <h2 className="text-3xl text-center">Sign up</h2>
-                
+        <div className="p-10 min-w-[500px] mx-6  bg-white border border-stone-200 shadow-md rounded-xl">
+            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col w-full">
+                <h2 className="text-4xl font-semibold text-center mb-5">Sign up</h2>
                 <LabelInput 
                 label="Name" 
                 placeholder="Enter your name"
@@ -108,7 +108,16 @@ export const Register = () => {
                  name="confirmPassword"
                  error={errors.confirmPassword}
                 />
-                <button type="submit" disabled={!isValid} className="border border-purple-400 bg-purple-500 text-xl p-1 rounded-lg mt-10 text-white max-w-28 disabled:bg-blue-200 disabled:border-blue-200 disabled:text-gray-500">Register</button>
+                <div className="flex justify-center">
+                 <button type="submit" disabled={!isValid} 
+                   className=" border border-blue-400 bg-blue-500 text-xl px-5 py-2 w-full rounded-lg mt-10 text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400">
+                   Register
+                 </button>
+                </div>
+                <div className="flex justify-center mt-2">
+                <label className="text-sm font-light text-muted-foreground mr-1">Already have an account?</label>
+                <label className="text-sm font-semibold hover:text-blue-500 hover:underline hover:decoration-blue-500 hover:cursor-pointer">Log in</label>
+                </div>
             </form>
         </div>
     )
