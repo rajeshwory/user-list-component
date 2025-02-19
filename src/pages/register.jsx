@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeOff, Eye } from "lucide-react";
 import { useState } from "react";
+import registerApi from "../api/register";
 
 const validationSchema = z
     .object({
@@ -30,6 +31,24 @@ const validationSchema = z
         </div>
     )
  }   
+
+//  const handleRegister = async (formData) => {
+//     try {
+//       const response = await registerUser({
+//         email: formData.email,
+//         password: formData.password,
+//         name: formData.name,
+//         // Add other fields as needed
+//       });
+//       // Handle successful registration
+//       console.log('Registration successful:', response);
+//     } catch (error) {
+//       // Handle registration error
+//       console.error('Registration failed:', error);
+//     }
+//   };
+
+
 
  const LabelPassword = ({label, placeholder, register, name, error}) => {
 
@@ -70,15 +89,27 @@ const validationSchema = z
 
 export const Register = () => {
 
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm({ resolver: zodResolver(validationSchema), mode: "onChange" })
+    const { register, formState: { errors, isValid } } = useForm({ resolver: zodResolver(validationSchema), mode: "onChange" })
 
-    const submitForm = (data) => {
-        console.log(data)
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setError(null)
+        setSuccess(false)
+    
+        try {
+          const response = await registrationApi.post("/register", formData)
+          console.log("Registration successful:", response.data)
+          setSuccess(true)
+          setFormData({ username: "", email: "", password: "" }) // Reset form
+        } catch (error) {
+          console.error("Registration error:", error)
+          setError("Registration failed. Please try again.")
+        }
+      }
 
     return (
         <div className="p-10 min-w-[500px] mx-6  bg-white border border-stone-200 shadow-md rounded-xl">
-            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col w-full">
+            <form onSubmit={handleSubmit} className="flex flex-col w-full">
                 <h2 className="text-4xl font-semibold text-center mb-5">Sign up</h2>
                 <LabelInput 
                 label="Name" 
