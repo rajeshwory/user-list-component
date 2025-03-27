@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EyeOff, Eye } from "lucide-react";
 import supabase from "../config/supabaseClient";
 import {  useNavigate } from "react-router-dom";
@@ -66,11 +66,26 @@ const LabelPassword = ({ label, placeholder, register, name, error }) => {
 export const Login = () => {
     
     const navigate = useNavigate()
-    const [error, setError] = useState(null)
     const { register, handleSubmit: hookFormSubmit, formState: { errors, isValid } } = useForm({ resolver: zodResolver(validationSchema), mode: "onChange" })
 
+    useEffect(() => {  
+        // Listen for auth state changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          (_event, session) => {
+            if (!session) {
+              navigate('/login'); // Redirect to login if no session
+            }
+            else navigate('/')
+          }
+        );
+  
+        // Cleanup subscription
+        return () => {
+          subscription.unsubscribe();
+        };
+      }, []);
+
     const handleSubmit = hookFormSubmit( async(formData) => {
-        setError(null)
 
         try {
             const {data, error: supabaseError} = await supabase.auth.signInWithPassword({

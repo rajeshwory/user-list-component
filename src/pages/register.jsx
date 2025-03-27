@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeOff, Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 
@@ -76,6 +76,21 @@ export const Register = () => {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(false)
     const { register, handleSubmit: hookFormSubmit, formState: { errors, isValid } } = useForm({ resolver: zodResolver(validationSchema), mode: "onChange" })
+
+    useEffect(() => {  
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          (_event, session) => {
+            if (!session) {
+              navigate('/register'); 
+            }
+            else navigate('/')
+          }
+        );
+  
+        return () => {
+          subscription.unsubscribe();
+        };
+      }, []);
 
     const handleSubmit = hookFormSubmit( async (formData) => {
         setError(null)
