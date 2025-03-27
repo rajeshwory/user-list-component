@@ -36,8 +36,8 @@ function UserList() {
       <div>
         <div className='flex flex-col'>
           <div className='flex flex-row justify-between'>
-          <h1 className='text-4xl text-purple-500'>Users list</h1>
-          <input className='min-w-96 border-2 rounded-lg border-gray-300 bg-slate-50 hover:border-purple-500 hover:bg-white p-2' 
+          <h1 className='text-4xl text-purple-500 mr-2'>Users list</h1>
+          <input className='min-w-80 border-2 rounded-lg border-gray-300 bg-slate-50 hover:border-purple-500 hover:bg-white p-2' 
           type='text' 
           placeholder='Search...'
           value={searchInput}
