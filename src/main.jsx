@@ -7,6 +7,7 @@ import { Login } from './pages/login.jsx'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import UserDetail from './pages/user-detail.jsx'
 import Dashboard from './pages/dashboard.jsx'
+import { Test } from './pages/test.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
       <Route path='/app' element={<App />}/>
       <Route path='/user' element={<UserDetail />} />
       <Route path='/dashboard' element={<Dashboard />}/>
+      <Route path='/test' element={<Test />}/>
     </Routes>
     </BrowserRouter>
   </StrictMode>,
